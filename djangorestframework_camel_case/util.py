@@ -2,6 +2,7 @@ import re
 from collections import OrderedDict
 
 from django.utils import six
+from django.utils.functional import Promise
 
 camelize_re = re.compile(r"[a-z0-9]?_[a-z0-9]")
 
@@ -24,7 +25,7 @@ def camelize(data):
                 new_key = key
             new_dict[new_key] = camelize(value)
         return new_dict
-    if is_iterable(data) and not isinstance(data, six.string_types):
+    if is_iterable(data) and not isinstance(data, six.string_types + (Promise, )):
         return [camelize(item) for item in data]
     return data
 
